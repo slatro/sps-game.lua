@@ -1,4 +1,7 @@
--- Card Game
+-- Card Game with AO Token Rewards
+
+-- Define the AO token as the reward
+local RewardToken = "AO"
 
 -- Game state variables
 local GameMode = "Waiting"  -- Waiting for the game to start
@@ -31,6 +34,12 @@ function Player:showHand()
     return handStr
 end
 
+-- Function to send reward in AO tokens
+local function sendRewardAO(playerId, amount)
+    -- Simulating sending AO tokens as reward
+    print("Sending " .. amount .. " AO tokens to Player " .. playerId)
+end
+
 -- Game functions
 local function startGame()
     GameMode = "Playing"  -- Set game mode to playing
@@ -55,6 +64,11 @@ local function startGame()
     -- Show hands of players
     for _, player in ipairs(players) do
         print(player.name .. "'s hand: " .. player:showHand())
+    end
+
+    -- Send AO token rewards to players
+    for _, player in ipairs(players) do
+        sendRewardAO(player.id, 100)  -- Reward each player with 100 AO tokens
     end
 end
 
@@ -91,4 +105,3 @@ startGame()
 
 -- End the game
 endGame()
-
