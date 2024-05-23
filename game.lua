@@ -1,4 +1,4 @@
--- PID:  WW0oJTIwvfmyyu_6c-tCtjMToBZF_D7RNoNFuDvUGSM
+-- PID: WW0oJTIwvfmyyu_6c-tCtjMToBZF_D7RNoNFuDvUGSM
 
 -- Card Game with AO Token Rewards
 
@@ -69,12 +69,16 @@ end
 -- Game functions
 local function startGame(players)
     GameMode = "Playing"  -- Set game mode to playing
-    StateChangeTime = os.time() + 60  -- Game will end in 60 seconds
+    StateChangeTime = os.time() + 10  -- Game will end in 10 seconds for quick testing
 
     -- Deal cards to players
     local deck = {"Ace", "King", "Queen", "Jack", "10", "9", "8", "7", "6", "5", "4", "3", "2"}
     for _, player in ipairs(players) do
         for i = 1, 5 do
+            if #deck == 0 then
+                print("Deck is empty!")
+                return
+            end
             local randomIndex = math.random(1, #deck)
             local card = table.remove(deck, randomIndex)
             player:dealCard(card)
@@ -148,10 +152,8 @@ local players = {
     Player.new(4, "Player 4")
 }
 
--- Simulate game state changes
-gameStateHandler(players)  -- Should start the game
-
--- Simulate waiting for the game to end (in real scenario, this could be a loop or timed event)
-os.execute("sleep " .. tonumber(60))  -- Sleep for 60 seconds (Unix-based systems)
-
-gameStateHandler(players)  -- Should end the game
+-- Simulate game state changes in a loop for demonstration
+while GameMode ~= "Ended" do
+    gameStateHandler(players)
+    os.execute("sleep 1")  -- Sleep for 1 second between checks
+end
