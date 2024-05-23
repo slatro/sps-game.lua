@@ -1,0 +1,33 @@
+-- /root/sps-bot.lua
+
+local ao = require("ao")
+local Game = require("game")
+
+local GameTarget = '2N_92I9SjpbWQrmmjR0vqIBNde_nyPIQIBPn1DJXu5g'
+
+local function joinGame()
+    ao.send({
+        Target = GameTarget,
+        Action = "JoinGame"
+    })
+end
+
+local function makeChoice()
+    ao.send({
+        Target = GameTarget,
+        Action = "MakeChoice"
+    })
+end
+
+local function finishPoints()
+    ao.send({
+        Target = GameTarget,
+        Action = "FinishPoints"
+    })
+end
+
+return {
+    joinGame = joinGame,
+    makeChoice = makeChoice,
+    finishPoints = finishPoints
+}
