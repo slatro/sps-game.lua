@@ -10,7 +10,7 @@ turnOrder = turnOrder or {}  -- Oyuncuların sırası
 currentTurnIndex = currentTurnIndex or 1  -- Şu anki oyuncunun sırası
 timeout = 60  -- 60 saniye (1 dakika) zaman aşımı
 timer = nil  -- Zamanlayıcıyı saklamak için
-options = { "Taş", "Kağıt", "Makas" }
+options = { "Rock", "Paper", "Scissor" }
 
 local function guid()
     local seed = { 'e', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' }
@@ -98,9 +98,9 @@ end
 local function determineWinner(userChoice, computerChoice)
     if userChoice == computerChoice then
         return drawText
-    elseif (userChoice == "Taş" and computerChoice == "Makas") or
-           (userChoice == "Kağıt" and computerChoice == "Taş") or
-           (userChoice == "Makas" and computerChoice == "Kağıt") then
+    elseif (userChoice == "rock" and computerChoice == "Scissor") or
+           (userChoice == "Paper" and computerChoice == "Rock") or
+           (userChoice == "Scissor" and computerChoice == "Paper") then
         return successText
     else
         return failedText
