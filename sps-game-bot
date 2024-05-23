@@ -1,4 +1,4 @@
--- /root/sps-bot.lua
+-- /root/bot.lua
 
 local ao = require("ao")
 local Game = require("game")
