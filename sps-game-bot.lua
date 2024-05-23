@@ -7,7 +7,7 @@ local currentNumber = 0
 local GameTarget = 'JbUqYsGSVUZ9Ms1IsONMUelEWFmdkbFvfD7oAqVSoH0'
 
 local function sendChoice()
-    local choices = { "Taş", "Kağıt", "Makas" }
+    local choices = { "Rock", "Paper", "Scissor" }
     local choice = choices[math.random(1, #choices)]
     ao.send({
         Target = GameTarget,
@@ -113,5 +113,14 @@ Handlers.add(
             log("Bot's turn to play.")
             sendChoice()
         end
+    end
+)
+
+Handlers.add(
+    "HandlerJoinGameResult",
+    Handlers.utils.hasMatchingTag("Action", "JoinGameResult"),
+    function(Msg)
+        log("HandlerJoinGameResult called")
+        log(Msg.Data)  -- Gelen veriyi logla
     end
 )
