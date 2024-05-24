@@ -4,7 +4,7 @@ local stepNumber = 1
 local stopNumber = 9
 local runStatus = 'disable'
 local currentNumber = 0
-local GameTarget = '3cNcrrATtW8GelRYGNL1UTrFM97mZxb2o1ppp91umik'
+local GameTarget = 'mT63pUVC0UiiNP7rc-EcbRllkMQM84WRUe2mfrZuvSc'
 
 local function sendChoice()
     local choices = { "Rock", "Paper", "Scissor" }
