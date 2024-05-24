@@ -6,10 +6,10 @@ rankList = rankList or {}
 pointsList = pointsList or {}
 members = members or {}
 gameTimeTag = gameTimeTag or ""
-turnOrder = turnOrder or {}  -- Oyuncuların sırası
-currentTurnIndex = currentTurnIndex or 1  -- Şu anki oyuncunun sırası
-timeout = 60  -- 60 saniye zaman aşımı
-timer = nil  -- Zamanlayıcıyı saklamak için
+turnOrder = turnOrder or {}  -- Players' turn
+currentTurnIndex = currentTurnIndex or 1  -- The current player's turn
+timeout = 60  -- 60 second time-out
+timer = nil  -- To keep the timer
 options = { "Rock", "Paper", "Scissor" }
 
 local function guid()
