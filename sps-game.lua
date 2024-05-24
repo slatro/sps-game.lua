@@ -8,7 +8,7 @@ members = members or {}
 gameTimeTag = gameTimeTag or ""
 turnOrder = turnOrder or {}  -- Oyuncuların sırası
 currentTurnIndex = currentTurnIndex or 1  -- Şu anki oyuncunun sırası
-timeout = 60  -- 60 saniye (1 dakika) zaman aşımı
+timeout = 60  -- 60 saniye zaman aşımı
 timer = nil  -- Zamanlayıcıyı saklamak için
 options = { "Rock", "Paper", "Scissor" }
 
@@ -95,12 +95,12 @@ local function log(message)
     print("[LOG] " .. message)
 end
 
-local function determineWinner(userChoice, computerChoice)
-    if userChoice == computerChoice then
+local function determineWinner(UserChoice, computerChoice)
+    if UserChoice == computerChoice then
         return drawText
-    elseif (userChoice == "rock" and computerChoice == "Scissor") or
-           (userChoice == "Paper" and computerChoice == "Rock") or
-           (userChoice == "Scissor" and computerChoice == "Paper") then
+    elseif (UserChoice == "Rock" and computerChoice == "Scissor") or
+           (UserChoice == "Paper" and computerChoice == "Rock") or
+           (UserChoice == "Scissor" and computerChoice == "Paper") then
         return successText
     else
         return failedText
@@ -203,15 +203,24 @@ Handlers.add(
     function(Msg)
         log("HandlerFinishPoints called")
         checkRankExpire()
+        
         local uuid = guid()
+        log("Generated UUID: " .. uuid)
+        
         table.insert(rankList, {
             points = pointsList[Msg.From],
             name = Msg.Data,
             uuid = uuid,
             pid = Msg.From
         })
+        log("Updated rankList with new entry")
+        
         sortRankList()
+        log("Sorted rankList")
+        
         pointsList[Msg.From] = 0
+        log("Reset points for: " .. Msg.From)
+        
         local current = "Unknown"
         for index, obj in pairs(rankList) do
             if obj.uuid == uuid then
@@ -219,14 +228,17 @@ Handlers.add(
                 break
             end
         end
+        log("Current rank: " .. current)
 
         ao.send({
             Target = Msg.From,
             Action = "FinishPointsResult",
             Data = "Hey! You ranked " .. current
         })
+        log("FinishPointsResult sent to " .. Msg.From)
     end
 )
+
 
 -- User Makes a Choice
 Handlers.add(
@@ -236,12 +248,15 @@ Handlers.add(
         log("HandlerUserChoice called")
         
         local currentTurn = getCurrentTurn()
+        log("Current Turn: " .. currentTurn .. ", Message From: " .. Msg.From)
+        
         if Msg.From ~= currentTurn then
             ao.send({
                 Target = Msg.From,
                 Action = "Error",
                 Data = "It's not your turn!"
             })
+            log("Error: It's not your turn!")
             return
         end
 
@@ -249,13 +264,20 @@ Handlers.add(
             timer:stop()
         end
         
-        local userChoice = Msg.Data
-        local computerChoice = getComputerChoice()
+        local UserChoice = Msg.Data
+        log("UserChoice: " .. UserChoice)
         
-        local result = determineWinner(userChoice, computerChoice)
+        local computerChoice = getComputerChoice()
+        log("ComputerChoice: " .. computerChoice)
+        
+        local result = determineWinner(UserChoice, computerChoice)
+        log("Result: " .. result)
         
         local points = getPersonPoints(Msg.From)
+        log("Current Points: " .. points)
+        
         points = calculatePoints(result, points)
+        log("Updated Points: " .. points)
         
         pointsList[Msg.From] = points
         joinStatistic(Msg.From)
@@ -263,18 +285,24 @@ Handlers.add(
         ao.send({
             Target = Msg.From,
             Action = "UserChoiceResult",
-            Data = "Your Choice: " .. userChoice .. ", Computer's Choice: " .. computerChoice .. ", Result: " .. result .. ", Total Points: " .. points
+            Data = "Your Choice: " .. UserChoice .. ", Computer's Choice: " .. computerChoice .. ", Result: " .. result .. ", Total Points: " .. points
         })
-        
+        log("UserChoiceResult sent")
+
         local nextTurn = getNextTurn()
+        log("Next Turn: " .. nextTurn)
+        
         ao.send({
             Target = nextTurn,
             Action = "YourTurn",
             Data = "It's your turn now!"
         })
+        log("YourTurn sent to " .. nextTurn)
+        
         startTimer()
     end
 )
+
 
 -- Join Game
 Handlers.add(
@@ -303,8 +331,9 @@ Handlers.add(
         end
         ao.send({
             Target = Msg.From,
-            Action = "MembersList",
+            Action = "MembersList",  -- MembersList mesajını gönderiyoruz
             Data = retText
         })
     end
 )
+
