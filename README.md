@@ -1,4 +1,6 @@
-Start game with —>  GameTarget = "JbUqYsGSVUZ9Ms1IsONMUelEWFmdkbFvfD7oAqVSoH0"
+Start game with —>  
+
+GameTarget = "3cNcrrATtW8GelRYGNL1UTrFM97mZxb2o1ppp91umik"
 
 
 1. Joining the Game
@@ -31,7 +33,7 @@ Send({ Target = GameTarget, Action = "GetPoints" })
 
 Players can finish their current points and add them to the ranking by using the `FinishPoints` command. Player Name = PID
 
-Send({ Target = GameTarget, Action = "FinishPoints", Data = "Player Name" })
+Send({ Target = GameTarget, Action = "FinishPoints", Data = "slatrobot" })
 
 7. Viewing the Ranking List
 
@@ -44,3 +46,7 @@ Send({ Target = GameTarget, Action = "GetRank" })
 Players can view the current members by using the `GetMembers` command.
 
 Send({ Target = GameTarget, Action = "GetMembers" })
+
+9. User Choice Result
+
+Send({ Target = GameTarget, Action = "UserChoiceResult" })
