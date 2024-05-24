@@ -4,11 +4,12 @@ local stepNumber = 1
 local stopNumber = 9
 local runStatus = 'disable'
 local currentNumber = 0
-local GameTarget = 'JbUqYsGSVUZ9Ms1IsONMUelEWFmdkbFvfD7oAqVSoH0'
+local GameTarget = '3cNcrrATtW8GelRYGNL1UTrFM97mZxb2o1ppp91umik'
 
 local function sendChoice()
     local choices = { "Rock", "Paper", "Scissor" }
     local choice = choices[math.random(1, #choices)]
+    log("Sending choice: " .. choice)
     ao.send({
         Target = GameTarget,
         Action = "UserChoice",
@@ -68,8 +69,10 @@ Handlers.add(
     Handlers.utils.hasMatchingTag("Action", "UserChoiceResult"),
     function(Msg)
         if runStatus == 'disable' then
+            log("HandlerUserChoiceResult ignored: Bot is disabled")
             return
         end
+        log("HandlerUserChoiceResult called with Data: " .. Msg.Data)
         handleResult(Msg)
     end
 )
@@ -80,8 +83,10 @@ Handlers.add(
     Handlers.utils.hasMatchingTag("Action", "FinishPointsResult"),
     function(Msg)
         if runStatus == 'disable' then
+            log("HandlerFinishPointsResult ignored: Bot is disabled")
             return
         end
+        log("HandlerFinishPointsResult called with Data: " .. Msg.Data)
         handleFinish(Msg)
     end
 )
@@ -105,6 +110,7 @@ Handlers.add(
 )
 
 -- Your Turn Handler for Bot
+
 Handlers.add(
     "HandlerYourTurn",
     Handlers.utils.hasMatchingTag("Action", "YourTurn"),
@@ -122,5 +128,28 @@ Handlers.add(
     function(Msg)
         log("HandlerJoinGameResult called")
         log(Msg.Data)  -- Gelen veriyi logla
+        enableBot()  -- Botu etkinleştir
+    end
+)
+Handlers.add(
+    "HandlerUserChoice",
+    Handlers.utils.hasMatchingTag("Action", "UserChoice"),
+    function(Msg)
+        log("HandlerUserChoice called")
+        -- Kalan işlev kodları
+    end
+)
+
+-- Bu işlev botun durumunu etkinleştirir
+function enableBot()
+    runStatus = 'enable'
+    log("Bot is enabled.")
+end
+
+Handlers.add(
+    "HandlerGetMembers",
+    Handlers.utils.hasMatchingTag("Action", "MembersList"),
+    function(Msg)
+        log("Members List: " .. Msg.Data)
     end
 )
