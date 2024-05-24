@@ -319,7 +319,7 @@ Handlers.add(
     end
 )
 
--- Get All Members
+-- Get All Members Handler
 Handlers.add(
     "HandlerGetMembers",
     Handlers.utils.hasMatchingTag("Action", "GetMembers"),
@@ -331,9 +331,10 @@ Handlers.add(
         end
         ao.send({
             Target = Msg.From,
-            Action = "MembersList",  -- MembersList mesajını gönderiyoruz
+            Action = "MembersList",
             Data = retText
         })
     end
 )
+
 
